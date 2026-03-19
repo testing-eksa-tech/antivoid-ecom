@@ -18,8 +18,12 @@ class Order
 
   def self.find(id)
     return nil unless id && !id.empty?
-    hash = Database.collection(COLLECTION).find({ _id: BSON::ObjectId.from_string(id) }).first
-    from_hash(hash) if hash
+    begin
+      hash = Database.collection(COLLECTION).find({ _id: BSON::ObjectId.from_string(id) }).first
+      from_hash(hash) if hash
+    rescue BSON::Error::InvalidObjectId
+      nil
+    end
   end
 
   def self.create(attrs)
@@ -31,7 +35,11 @@ class Order
   def self.update_status(id, status, resi = nil)
     update_data = { status: status }
     update_data[:resi] = resi if resi
-    Database.collection(COLLECTION).update_one({ _id: BSON::ObjectId.from_string(id) }, { '$set' => update_data })
+    begin
+      Database.collection(COLLECTION).update_one({ _id: BSON::ObjectId.from_string(id) }, { '$set' => update_data })
+    rescue BSON::Error::InvalidObjectId
+      false
+    end
   end
 
   def self.from_hash(hash)

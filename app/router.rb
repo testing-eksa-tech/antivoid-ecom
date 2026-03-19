@@ -9,6 +9,7 @@ require_relative 'models/order'
 require_relative 'models/review'
 require_relative 'models/banner'
 require_relative 'utils/cloudinary_helper'
+require_relative 'utils/xendit_helper'
 require_relative 'helpers/view_helper'
 
 require_relative 'controllers/auth_controller'
@@ -57,7 +58,9 @@ class Router
         end
       end
     when '/order-success'
-      render_view('order_success')
+      id = @req.params['id']
+      order = Order.find(id) if id
+      render_view('order_success', { order: order })
     when '/sitemap.xml'
       render_sitemap
     when '/robots.txt'
@@ -152,6 +155,8 @@ class Router
       else
         render_view('register', layout: false)
       end
+    when '/webhooks/xendit'
+      handle_xendit_webhook if @req.post?
     else
       [404, { 'content-type' => 'text/html' }, ['Halaman Tidak Ditemukan']]
     end

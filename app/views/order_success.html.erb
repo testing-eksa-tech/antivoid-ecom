@@ -6,17 +6,23 @@
         </div>
     </div>
     
-    <h1 class="text-5xl font-black text-slate-900 mb-6 animate__animated animate__fadeInUp">Pesanan Berhasil!</h1>
+    <h1 class="text-5xl font-black text-slate-900 mb-6 animate__animated animate__fadeInUp">
+        <%= @order && @order.status == 'Paid' ? 'Pembayaran Berhasil!' : 'Pesanan Diterima!' %>
+    </h1>
     <p class="text-xl text-slate-500 mb-12 animate__animated animate__fadeInUp animate__delay-1s">
-        Terima kasih telah berbelanja di Antivoid Shop. Pesanan Anda sedang kami proses dan tim kami akan segera menghubungi Anda.
+        <%= @order && @order.status == 'Paid' ? 'Terima kasih telah berbelanja. Pembayaran Anda telah kami terima dan pesanan akan segera dikirim.' : 'Terima kasih telah berbelanja di Antivoid Shop. Pesanan Anda sedang kami proses.' %>
     </p>
     
     <div class="glass p-8 rounded-[40px] border border-white/60 mb-12 animate__animated animate__fadeInUp animate__delay-1s">
         <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center justify-center gap-2">
-            <i data-lucide="info" class="w-5 h-5 text-indigo-600"></i> Informasi Selanjutnya
+            <i data-lucide="info" class="w-5 h-5 text-indigo-600"></i> Status Pesanan: <span class="text-indigo-600"><%= @order ? @order.status : 'Pending' %></span>
         </h3>
         <p class="text-slate-500 leading-relaxed mb-6">
-            Instruksi pembayaran manual telah dikirim ke kontak Anda. Silakan lakukan konfirmasi setelah transfer berhasil.
+            <% if @order && @order.status == 'Paid' %>
+                Pesanan Anda telah dibayar. Kami akan memproses pengiriman secepat mungkin.
+            <% else %>
+                Pesanan Anda sedang menunggu konfirmasi pembayaran dari Xendit. Jika sudah membayar, status akan berubah otomatis.
+            <% end %>
         </p>
         <div class="h-px bg-slate-200/50 mx-10 mb-6"></div>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">

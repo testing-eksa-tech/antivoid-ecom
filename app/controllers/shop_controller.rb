@@ -82,23 +82,50 @@ module ShopController
         Product.update(item[:product_id].to_s, { stock: product.stock - item[:quantity] })
       end
       
+      order_data[:payment_method] = @req.params['payment'] || 'Manual'
       result = Order.create(order_data)
       
-      # Send Emails via Brevo
-      if result && result.inserted_id
-        require_relative '../utils/email_helper'
+      # Xendit Invoice Creation (only if Gateway selected)
+      if result && result.inserted_id && order_data[:payment_method] == 'Gateway'
         order = Order.find(result.inserted_id.to_s)
-        if order
-          EmailHelper.send_receipt(order)
-          EmailHelper.send_admin_order_notification(order, @req.base_url)
+        invoice = XenditHelper.create_invoice(order)
+        
+        if invoice && invoice['invoice_url']
+          @req.session['cart'] = {}
+          return redirect_to(invoice['invoice_url'])
         end
       end
 
+      # Fallback for Manual or if Xendit fails
       @req.session['cart'] = {}
-      redirect_to('/order-success')
+      redirect_to('/order-success?id=' + (result.inserted_id.to_s rescue ''))
     else
       redirect_to('/cart')
     end
+  end
+
+  def handle_xendit_webhook
+    return [403, {}, ['Invalid Token']] unless XenditHelper.verify_callback(@req.env['HTTP_X_CALLBACK_TOKEN'])
+
+    data = JSON.parse(@req.body.read)
+    external_id = data['external_id']
+    status = data['status']
+
+    if status == 'PAID' || status == 'SETTLED'
+      order = Order.find(external_id)
+      if order && order.status != 'Paid'
+        Order.update_status(external_id, 'Paid')
+        
+        # Send Emails via Brevo after payment
+        require_relative '../utils/email_helper'
+        EmailHelper.send_receipt(order)
+        EmailHelper.send_admin_order_notification(order, @req.base_url)
+      end
+    elsif status == 'EXPIRED'
+      Order.update_status(external_id, 'Expired')
+    end
+
+    [200, { 'content-type' => 'application/json' }, [{ status: 'OK' }.to_json]]
   end
 
   def handle_product_review
