@@ -3,7 +3,7 @@ require_relative '../utils/database'
 class Order
   COLLECTION = :orders
 
-  attr_accessor :id, :customer_name, :address, :contact, :customer_email, :items, :total_price, :status, :created_at, :resi, :user_id
+  attr_accessor :id, :customer_name, :address, :contact, :customer_email, :items, :total_price, :status, :created_at, :resi, :user_id, :payment_method
 
   def self.all(filter = {}, limit: nil, skip: nil)
     query = Database.collection(COLLECTION).find(filter).sort(created_at: -1)
@@ -65,6 +65,7 @@ class Order
     order.created_at = hash['created_at']
     order.resi = hash['resi']
     order.user_id = hash['user_id']
+    order.payment_method = hash['payment_method']
     order
   end
 end

@@ -97,6 +97,15 @@ module ShopController
       end
 
       # Fallback for Manual or if Xendit fails
+      if order_data[:payment_method] == 'Manual'
+        require_relative '../utils/email_helper'
+        order = Order.find(result.inserted_id.to_s)
+        if order
+          EmailHelper.send_receipt(order)
+          EmailHelper.send_admin_order_notification(order, @req.base_url)
+        end
+      end
+
       @req.session['cart'] = {}
       redirect_to('/order-success?id=' + (result.inserted_id.to_s rescue ''))
     else

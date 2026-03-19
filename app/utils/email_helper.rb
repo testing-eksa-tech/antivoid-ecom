@@ -56,10 +56,10 @@ module EmailHelper
         email: ENV['SENDER_EMAIL'] || "system@antivoid.shop" 
       },
       to: [{ email: ENV['ADMIN_EMAIL'], name: "Admin Antivoid" }],
-      subject: "🚨 PESANAN BARU MASUK: ##{order.id}",
+      subject: "🚨 [#{order.payment_method}] PESANAN BARU: ##{order.id}",
       htmlContent: "
         <h3>Halo Admin,</h3>
-        <p>Ada pesanan baru dari <strong>#{order.customer_name}</strong> sebesar <strong>Rp #{order.total_price.to_s.gsub(/\B(?=(\d{3})+(?!\d))/, '.')}</strong>.</p>
+        <p>Ada pesanan baru dari <strong>#{order.customer_name}</strong> dengan metode <strong>#{order.payment_method}</strong> sebesar <strong>Rp #{order.total_price.to_s.gsub(/\B(?=(\d{3})+(?!\d))/, '.')}</strong>.</p>
         <p><a href='#{base_url}/admin/orders/view?id=#{order.id}'>Klik di sini untuk melihat detail pesanan di Dashboard Admin.</a></p>
       "
     }.to_json

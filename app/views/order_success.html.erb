@@ -7,21 +7,35 @@
     </div>
     
     <h1 class="text-5xl font-black text-slate-900 mb-6 animate__animated animate__fadeInUp">
-        <%= @order && @order.status == 'Paid' ? 'Pembayaran Berhasil!' : 'Pesanan Diterima!' %>
+        <% if @order && @order.payment_method == 'Gateway' %>
+            <%= @order.status == 'Paid' ? 'Pembayaran Berhasil!' : 'Menunggu Pembayaran' %>
+        <% else %>
+            Pesanan Berhasil!
+        <% end %>
     </h1>
     <p class="text-xl text-slate-500 mb-12 animate__animated animate__fadeInUp animate__delay-1s">
-        <%= @order && @order.status == 'Paid' ? 'Terima kasih telah berbelanja. Pembayaran Anda telah kami terima dan pesanan akan segera dikirim.' : 'Terima kasih telah berbelanja di Antivoid Shop. Pesanan Anda sedang kami proses.' %>
+        <% if @order && @order.payment_method == 'Gateway' %>
+            <%= @order.status == 'Paid' ? 'Terima kasih telah berbelanja. Pembayaran Anda telah kami terima dan pesanan akan segera dikirim.' : 'Pesanan Anda telah kami terima. Silakan selesaikan pembayaran via Xendit.' %>
+        <% else %>
+            Terima kasih telah berbelanja di Antivoid Shop. Silakan lakukan pembayaran manual agar pesanan Anda dapat segera kami proses.
+        <% end %>
     </p>
     
     <div class="glass p-8 rounded-[40px] border border-white/60 mb-12 animate__animated animate__fadeInUp animate__delay-1s">
         <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center justify-center gap-2">
-            <i data-lucide="info" class="w-5 h-5 text-indigo-600"></i> Status Pesanan: <span class="text-indigo-600"><%= @order ? @order.status : 'Pending' %></span>
+            <i data-lucide="info" class="w-5 h-5 text-indigo-600"></i> Informasi Pesanan: <span class="text-indigo-600"><%= @order ? @order.status : 'Pending' %></span>
         </h3>
         <p class="text-slate-500 leading-relaxed mb-6">
-            <% if @order && @order.status == 'Paid' %>
-                Pesanan Anda telah dibayar. Kami akan memproses pengiriman secepat mungkin.
+            <% if @order && @order.payment_method == 'Gateway' %>
+                <% if @order.status == 'Paid' %>
+                    Pesanan Anda telah dibayar. Kami akan memproses pengiriman secepat mungkin.
+                <% else %>
+                    Pesanan Anda sedang menunggu konfirmasi pembayaran dari Xendit. Jika sudah membayar, status akan berubah otomatis.
+                <% end %>
             <% else %>
-                Pesanan Anda sedang menunggu konfirmasi pembayaran dari Xendit. Jika sudah membayar, status akan berubah otomatis.
+                Silakan transfer ke rekening berikut:<br>
+                <span class="font-bold text-slate-800">BCA: 1234567890 (A/N Antivoid Shop)</span><br>
+                Konfirmasi pembayaran akan dikirimkan melalui email setelah tim kami melakukan verifikasi.
             <% end %>
         </p>
         <div class="h-px bg-slate-200/50 mx-10 mb-6"></div>
