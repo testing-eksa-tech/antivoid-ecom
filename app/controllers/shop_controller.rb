@@ -88,7 +88,7 @@ module ShopController
       # Xendit Invoice Creation (only if Gateway selected)
       if result && result.inserted_id && order_data[:payment_method] == 'Gateway'
         order = Order.find(result.inserted_id.to_s)
-        invoice = XenditHelper.create_invoice(order)
+        invoice = XenditHelper.create_invoice(order, @req.base_url)
         
         if invoice && invoice['invoice_url']
           @req.session['cart'] = {}

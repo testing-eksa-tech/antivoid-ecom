@@ -6,10 +6,11 @@ require 'base64'
 module XenditHelper
   XENDIT_URL = 'https://api.xendit.co/v2/invoices'
 
-  def self.create_invoice(order)
+  def self.create_invoice(order, base_url = nil)
     secret_key = ENV['XENDIT_SECRET_KEY']
     return nil unless secret_key
 
+    base_url ||= ENV['BASE_URL'] || 'http://localhost:9292'
     uri = URI.parse(XENDIT_URL)
     request = Net::HTTP::Post.new(uri)
     
@@ -23,8 +24,8 @@ module XenditHelper
       amount: order.total_price.to_i,
       payer_email: order.customer_email,
       description: "Order ##{order.id} from Antivoid Shop",
-      success_redirect_url: "#{ENV['BASE_URL'] || 'http://localhost:9292'}/order-success?id=#{order.id}",
-      failure_redirect_url: "#{ENV['BASE_URL'] || 'http://localhost:9292'}/cart"
+      success_redirect_url: "#{base_url}/order-success?id=#{order.id}",
+      failure_redirect_url: "#{base_url}/cart"
     }
     
     request.body = body.to_json
