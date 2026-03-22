@@ -12,6 +12,11 @@ GEM
       ostruct
     csv (3.3.5)
     dotenv (3.2.0)
+    eksa-server (1.1.1)
+      logger (~> 1.6)
+      nio4r (~> 2.0)
+      rack (~> 3.0)
+      rackup (~> 2.0)
     erb (6.0.2)
     faraday (2.14.1)
       faraday-net_http (>= 2.0, < 3.5)
@@ -35,8 +40,6 @@ GEM
       uri (>= 0.11.1)
     nio4r (2.7.5)
     ostruct (0.6.3)
-    puma (6.6.1)
-      nio4r (~> 2.0)
     rack (3.2.5)
     rack-session (2.1.1)
       base64 (>= 0.1.0)
@@ -55,11 +58,11 @@ DEPENDENCIES
   cloudinary (~> 2.0)
   csv
   dotenv (~> 3.1)
+  eksa-server (~> 1.1.1)
   erb
   json
   jwt (~> 2.8)
   mongo (~> 2.19)
-  puma (~> 6.4)
   rack (~> 3.0)
   rack-session (~> 2.0)
   rackup (~> 2.1)
@@ -72,6 +75,7 @@ CHECKSUMS
   cloudinary (2.4.4) sha256=a458a837e9ddb69b12f009496c09557f16db4244466530e02136541408d85efc
   csv (3.3.5) sha256=6e5134ac3383ef728b7f02725d9872934f523cb40b961479f69cf3afa6c8e73f
   dotenv (3.2.0) sha256=e375b83121ea7ca4ce20f214740076129ab8514cd81378161f11c03853fe619d
+  eksa-server (1.1.1) sha256=bb7889601ae16e332ade1fa8deb3484558df798d125b4f998ae16280b51ada05
   erb (6.0.2) sha256=9fe6264d44f79422c87490a1558479bd0e7dad4dd0e317656e67ea3077b5242b
   faraday (2.14.1) sha256=a43cceedc1e39d188f4d2cdd360a8aaa6a11da0c407052e426ba8d3fb42ef61c
   faraday-follow_redirects (0.5.0) sha256=5cde93c894b30943a5d2b93c2fe9284216a6b756f7af406a1e55f211d97d10ad
@@ -85,7 +89,6 @@ CHECKSUMS
   net-http (0.9.1) sha256=25ba0b67c63e89df626ed8fac771d0ad24ad151a858af2cc8e6a716ca4336996
   nio4r (2.7.5) sha256=6c90168e48fb5f8e768419c93abb94ba2b892a1d0602cb06eef16d8b7df1dca1
   ostruct (0.6.3) sha256=95a2ed4a4bd1d190784e666b47b2d3f078e4a9efda2fccf18f84ddc6538ed912
-  puma (6.6.1) sha256=b9b56e4a4ea75d1bfa6d9e1972ee2c9f43d0883f011826d914e8e37b3694ea1e
   rack (3.2.5) sha256=4cbd0974c0b79f7a139b4812004a62e4c60b145cba76422e288ee670601ed6d3
   rack-session (2.1.1) sha256=0b6dc07dea7e4b583f58a48e8b806d4c9f1c6c9214ebc202ec94562cbea2e4e9
   rackup (2.3.1) sha256=6c79c26753778e90983761d677a48937ee3192b3ffef6bc963c0950f94688868

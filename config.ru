@@ -3,6 +3,7 @@ require 'rack'
 require 'rackup'
 require 'rack/session'
 require_relative 'app/app'
+require_relative 'app/router'
 
 # Load Environment Variables
 Dotenv.load

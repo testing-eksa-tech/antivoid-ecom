@@ -30,13 +30,13 @@ Antivoid adalah aplikasi e-commerce modern berbasis Ruby yang dirancang dengan e
 - **📈 Google Ready**: Dilengkapi dengan `sitemap.xml` dan `robots.txt` otomatis.
 - **💎 Structured Data (JSON-LD)**: Dukungan rich snippets untuk tampilan produk yang lebih menonjol di hasil pencarian.
 - **Social Sharing**: Meta tags Open Graph (OG) dioptimalkan untuk berbagi di media sosial.
-- **⚡ Ultra Fast Performance**: Menggunakan Ruby Rack + Puma untuk waktu pemuatan halaman yang sangat cepat.
+- **⚡ Ultra Fast Performance**: Menggunakan Ruby Rack + EksaServer untuk waktu pemuatan halaman yang sangat cepat.
 - **🖼️ Asset Optimization**: Cloudinary CDN untuk pengiriman gambar responsif dan pembersihan otomatis storage.
 
 ## 💻 Teknologi
 
 - **Core**: [Ruby 3.3+](https://www.ruby-lang.org/) dengan [Rack](https://github.com/rack/rack)
-- **Server**: [Puma](https://puma.io/)
+- **Server**: [EksaServer](https://github.com/IshikawaUta/eksa-server)
 - **Database**: [MongoDB Atlas](https://www.mongodb.com/atlas)
 - **Payment Gateway**: [Xendit API](https://www.xendit.co/)
 - **Storage & CDN**: [Cloudinary](https://cloudinary.com/)
@@ -80,7 +80,7 @@ Antivoid adalah aplikasi e-commerce modern berbasis Ruby yang dirancang dengan e
 
 5. **Jalankan Aplikasi**:
    ```bash
-   rackup
+   bundle exec eksa-server
    ```
 
 ## 🛠️ Struktur Proyek

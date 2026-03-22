@@ -221,12 +221,13 @@ class Router
     [200, { 'content-type' => 'text/plain' }, [txt]]
   end
 
-  def render_view(view, locals = {}, layout: true)
+  def render_view(view, locals = {}, layout: true, **extra_locals)
     view_path = File.expand_path("../views/#{view}.html.erb", __FILE__)
     unless File.exist?(view_path)
       return [404, { 'content-type' => 'text/html' }, ["Tampilan tidak ditemukan: #{view}"]]
     end
 
+    locals = locals.merge(extra_locals)
     locals.each { |k, v| instance_variable_set("@#{k}", v) }
 
     template = File.read(view_path)
